@@ -10,15 +10,19 @@ import { DatePipe } from '@angular/common';
 import { AuthInterceptorService } from './auth/auth-data/services/auth-interceptor.service';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { PostDataModule } from './post/post-data/post-data.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    NotFoundComponent
   ],
   imports: [
     HttpClientModule,
     AuthDataModule,
+    PostDataModule,
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({}, {}),

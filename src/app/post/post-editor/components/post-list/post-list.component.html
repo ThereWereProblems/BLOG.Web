@@ -1,0 +1,24 @@
+<div class="container mt-4">
+    <div class="col-md-6">
+        <h4>Aktualności</h4>
+        <div *ngIf="(postList$ | async) as postList">
+            <ul *ngIf="(dataPager$ | async) as pager" class="list-group">
+                <li class="list-group-item" *ngFor="
+            let tutorial of postList | paginate : {
+                    itemsPerPage: pager.pageSize,
+                    currentPage: pager.pageIndex,
+                    totalItems: pager.totalRecords
+                  };
+            let i = index
+          ">
+                    {{ tutorial.title }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center">
+        <pagination-controls class="mt-4" previousLabel="Poprzednia" nextLabel="Następna" [responsive]="true"
+            (pageChange)="handlePageChange($event)"></pagination-controls>
+    </div>
+</div>
