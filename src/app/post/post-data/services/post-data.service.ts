@@ -5,6 +5,14 @@ import { Post } from "src/app/shered/post/post.model";
 @Injectable()
 export class PostDataService{
 
+        
+        // lista postów
+        private _postData$: BehaviorSubject<Post | undefined> = new BehaviorSubject<Post | undefined>(undefined);
+
+        public get postData$() { return this._postData$.asObservable(); }
+    
+        public emitPostDataChanged = (record: Post) => this._postData$.next(record);
+
         // lista postów
         private _postListData$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
 

@@ -45,4 +45,22 @@ export class PostDataEffects {
         ))
     ));
 
+    //create post
+    createPost$ = createEffect(() => this.actons$.pipe(
+        ofType(PostDataActions.createPost),
+        switchMap((action) => this.service.create(action.model, action.file).pipe(
+            map(data => PostDataActions.createPostComplited()),
+            catchError((_) => of(PostDataActions.createPostField()))
+        ))
+    ));
+
+    createPostComplited$ = createEffect(() => this.actons$.pipe(
+        ofType(PostDataActions.createPostComplited),
+        tap(_ => window.alert("Wpis dodany pomyślnie!"))
+    ), { dispatch: false });
+
+    createPostField$ = createEffect(() => this.actons$.pipe(
+        ofType(PostDataActions.createPostField),
+        tap(_ => window.alert("Błąd podczas dodawania wpisu!"))
+    ), { dispatch: false });
 }

@@ -1,17 +1,17 @@
 <div class="container mt-4">
-    <div class="col-md-6">
+    <div>
         <h4>Aktualności</h4>
         <div *ngIf="(postList$ | async) as postList">
             <ul *ngIf="(dataPager$ | async) as pager" class="list-group">
                 <li class="list-group-item" *ngFor="
-            let tutorial of postList | paginate : {
+            let post of postList | paginate : {
                     itemsPerPage: pager.pageSize,
                     currentPage: pager.pageIndex,
                     totalItems: pager.totalRecords
                   };
             let i = index
           ">
-                    {{ tutorial.title }}
+                    <div (click)="showDetail(post.id!)">{{ post.title }}</div>
                 </li>
             </ul>
         </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { PostDataService } from 'src/app/post/post-data/services/post-data.service';
@@ -18,6 +19,7 @@ export class PostListComponent {
   public dataPager$: Observable<DataPager>;
 
   constructor(private store: Store<PostDataState>,
+    private router: Router,
     service: PostDataService) {
     this.postList$ = service.postListData$
     this.dataPager$ = store.select(getPager);
@@ -27,6 +29,15 @@ export class PostListComponent {
 
   handlePageChange(event: number): void {
     this.store.dispatch(PostDataActions.changePagePostDataList({ pageNumber: event }))
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  public showDetail(id: number){
+    this.router.navigate(['post', 'view', id]);
+
   }
 
 }

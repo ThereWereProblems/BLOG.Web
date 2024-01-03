@@ -5,19 +5,25 @@ import { PostEditorRoutingModule } from "./post-editor-routing.module";
 import { PostListComponent } from "./components/post-list/post-list.component";
 import { PostViewComponent } from "./components/post-view/post-view.component";
 import { NgxPaginationModule } from "ngx-pagination";
+import { PostCreateComponent } from './components/post-create/post-create.component';
+import { NgxEditorModule } from "ngx-editor";
+import { PostResolver } from "./resolvers/post.resolver";
 
 @NgModule({
     imports:[
         CommonModule,
         FormsModule,
         PostEditorRoutingModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        NgxEditorModule
     ],
     providers:[
-        // resolvers,
+        PostResolver
     ],
     declarations:[
         PostListComponent,
+        PostViewComponent,
+        PostCreateComponent,
         PostViewComponent
     ]
 })
