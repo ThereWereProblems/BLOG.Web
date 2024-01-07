@@ -49,14 +49,15 @@ export class PostDataEffects {
     createPost$ = createEffect(() => this.actons$.pipe(
         ofType(PostDataActions.createPost),
         switchMap((action) => this.service.create(action.model, action.file).pipe(
-            map(data => PostDataActions.createPostComplited()),
+            map(data => PostDataActions.createPostComplited({id: data.body!})),
             catchError((_) => of(PostDataActions.createPostField()))
         ))
     ));
 
     createPostComplited$ = createEffect(() => this.actons$.pipe(
         ofType(PostDataActions.createPostComplited),
-        tap(_ => window.alert("Wpis dodany pomyślnie!"))
+        tap(_ => window.alert("Wpis dodany pomyślnie!")),
+        tap(data => this.router.navigate(['post', 'view', data.id]))
     ), { dispatch: false });
 
     createPostField$ = createEffect(() => this.actons$.pipe(

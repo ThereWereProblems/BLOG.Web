@@ -27,7 +27,8 @@ export const createPost = createAction(
 )
 
 export const createPostComplited = createAction(
-    "[CreatePostComponent] Create Post Complited"
+    "[CreatePostComponent] Create Post Complited",
+    props<{ id: number}>()
 )
 
 export const createPostField = createAction(

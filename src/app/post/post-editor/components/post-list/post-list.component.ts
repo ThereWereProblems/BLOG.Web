@@ -1,13 +1,15 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { PostDataService } from 'src/app/post/post-data/services/post-data.service';
 import { PostDataActions } from 'src/app/post/post-data/store/action-types';
 import { getPager } from 'src/app/post/post-data/store/post-data.selectors';
 import { PostDataState } from 'src/app/post/post-data/store/reducers';
 import { DataPager } from 'src/app/shered/pager/data-pager.model';
 import { Post } from 'src/app/shered/post/post.model';
+import { EnvironmentDEV } from 'src/configurations/environment-dev';
 
 @Component({
   selector: 'app-post-list',
@@ -17,12 +19,31 @@ import { Post } from 'src/app/shered/post/post.model';
 export class PostListComponent {
   public postList$: Observable<Post[]>;
   public dataPager$: Observable<DataPager>;
+  public api: string;
 
   constructor(private store: Store<PostDataState>,
     private router: Router,
-    service: PostDataService) {
-    this.postList$ = service.postListData$
+    service: PostDataService,
+    datepipe: DatePipe) {
+    this.api = EnvironmentDEV.apiLink + "/Post/image/";
     this.dataPager$ = store.select(getPager);
+
+    this.postList$ = service.postListData$.pipe(
+      map(data => {
+        data.forEach(post => {
+          Object.keys(post).forEach(key => {
+            let curentValue = (post as any)[key];
+
+            switch (key) {
+              case 'publishedAt':
+                post[key] = new Date(curentValue);
+                break;
+            }
+          })
+        });
+        return data;
+      })
+    );
 
     store.dispatch(PostDataActions.loadPostDataList())
   }
@@ -35,7 +56,7 @@ export class PostListComponent {
     });
   }
 
-  public showDetail(id: number){
+  public showDetail(id: number) {
     this.router.navigate(['post', 'view', id]);
 
   }

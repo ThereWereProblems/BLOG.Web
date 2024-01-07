@@ -1,18 +1,29 @@
 <div class="container mt-4">
     <div>
-        <h4>Aktualności</h4>
+        <h2 class="mb-4">Aktualności</h2>
         <div *ngIf="(postList$ | async) as postList">
             <ul *ngIf="(dataPager$ | async) as pager" class="list-group">
-                <li class="list-group-item" *ngFor="
-            let post of postList | paginate : {
-                    itemsPerPage: pager.pageSize,
-                    currentPage: pager.pageIndex,
-                    totalItems: pager.totalRecords
-                  };
-            let i = index
-          ">
-                    <div (click)="showDetail(post.id!)">{{ post.title }}</div>
-                </li>
+                <article *ngFor="
+                    let post of postList | paginate : {
+                            itemsPerPage: pager.pageSize,
+                            currentPage: pager.pageIndex,
+                            totalItems: pager.totalRecords
+                          };
+                    let i = index
+                  " class="postcard light blue" (click)="showDetail(post.id!)">
+                    <img class="postcard__img" [src]="api + post.image" alt="Image Title" />
+                    <div class="postcard__text">
+                        <h1 class="postcard__title blue"><a href="#">{{post.title}}</a></h1>
+                        <div class="postcard__subtitle small">
+                            <i class="fas fa-calendar-alt mr-2"></i>{{post.publishedAt?.toLocaleString()}}
+                        </div>
+                        <div class="postcard__bar"></div>
+                        <div class="postcard__preview-txt">{{post.description}}</div>
+                        <ul class="postcard__tagbox">
+                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>{{post.author}}</li>
+                        </ul>
+                    </div>
+                </article>
             </ul>
         </div>
     </div>

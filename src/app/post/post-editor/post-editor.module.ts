@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { PostEditorRoutingModule } from "./post-editor-routing.module";
@@ -18,7 +18,8 @@ import { PostResolver } from "./resolvers/post.resolver";
         NgxEditorModule
     ],
     providers:[
-        PostResolver
+        PostResolver,
+        DatePipe
     ],
     declarations:[
         PostListComponent,

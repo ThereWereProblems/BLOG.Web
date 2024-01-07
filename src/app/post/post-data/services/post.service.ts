@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BaseQuery } from "src/app/shered/pager/base-query";
@@ -30,12 +30,12 @@ export class PostService {
                 }
             });
 
-    public create = (model: PostCreate, file: File) =>
+    public create = (model: PostCreate, file: File): Observable<HttpResponse<number>> =>
     {
         const formData = new FormData();
         formData.append('model', JSON.stringify(model));
         formData.append('file', file);
-        return this.http.post(this.api + '/Post/create', formData, {
+        return this.http.post<number>(this.api + '/Post/create', formData, {
             observe: 'response'
           })
       }
