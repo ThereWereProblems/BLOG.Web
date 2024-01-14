@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -9,7 +8,7 @@ import { getPager } from 'src/app/post/post-data/store/post-data.selectors';
 import { PostDataState } from 'src/app/post/post-data/store/reducers';
 import { DataPager } from 'src/app/shered/pager/data-pager.model';
 import { Post } from 'src/app/shered/post/post.model';
-import { EnvironmentDEV } from 'src/configurations/environment-dev';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-list',
@@ -23,9 +22,8 @@ export class PostListComponent {
 
   constructor(private store: Store<PostDataState>,
     private router: Router,
-    service: PostDataService,
-    datepipe: DatePipe) {
-    this.api = EnvironmentDEV.apiLink + "/Post/image/";
+    service: PostDataService) {
+    this.api = environment.apiUrl + "/File/image/";
     this.dataPager$ = store.select(getPager);
 
     this.postList$ = service.postListData$.pipe(

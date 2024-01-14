@@ -5,7 +5,7 @@ import { LoginResult } from "src/app/shered/auth/login-result.model";
 import { Login } from "src/app/shered/auth/login.model";
 import { RefreshRequest } from "src/app/shered/auth/refresh-request.model";
 import { Register } from "src/app/shered/auth/register.model";
-import { EnvironmentDEV } from "src/configurations/environment-dev";
+import { environment } from "src/environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
     constructor(
         private http: HttpClient
     ) {
-        this.api = EnvironmentDEV.apiLink;
+        this.api = environment.apiUrl;
     }
 
     public register = (model: Register) =>

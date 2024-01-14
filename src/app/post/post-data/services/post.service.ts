@@ -5,7 +5,7 @@ import { BaseQuery } from "src/app/shered/pager/base-query";
 import { PagedList } from "src/app/shered/pager/paged-list.model";
 import { PostCreate } from "src/app/shered/post/post-create.model";
 import { Post } from "src/app/shered/post/post.model";
-import { EnvironmentDEV } from "src/configurations/environment-dev";
+import { environment } from "src/environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class PostService {
@@ -15,7 +15,7 @@ export class PostService {
     constructor(
         private http: HttpClient
     ) {
-        this.api = EnvironmentDEV.apiLink;
+        this.api = environment.apiUrl;
     }
 
     public get = (id: number): Observable<Post> => 

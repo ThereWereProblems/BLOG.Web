@@ -13,7 +13,7 @@
                   " class="postcard light blue" (click)="showDetail(post.id!)">
                     <img class="postcard__img" [src]="api + post.image" alt="Image Title" />
                     <div class="postcard__text">
-                        <h1 class="postcard__title blue"><a href="#">{{post.title}}</a></h1>
+                        <h1 class="postcard__title blue"><a (click)="showDetail(post.id!)">{{post.title}}</a></h1>
                         <div class="postcard__subtitle small">
                             <i class="fas fa-calendar-alt mr-2"></i>{{post.publishedAt?.toLocaleString()}}
                         </div>
