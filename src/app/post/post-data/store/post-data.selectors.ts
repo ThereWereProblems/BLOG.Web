@@ -7,3 +7,8 @@ export const getPager = createSelector(
     selectPostState,
     state => state.dataPager
 )
+
+export const getCurrentPost = createSelector(
+    selectPostState,
+    state => state.postId
+)

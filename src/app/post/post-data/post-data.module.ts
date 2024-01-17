@@ -4,11 +4,9 @@ import { EffectsModule } from "@ngrx/effects";
 import { PostDataEffects } from "./store/post-data.effects";
 import { StoreModule } from "@ngrx/store";
 import { postDataStateReducer } from "./store/reducers";
-import { PostDataService } from "./services/post-data.service";
 
 @NgModule({
     providers: [
-        PostDataService
     ],
     imports: [
         CommonModule,
@@ -21,6 +19,6 @@ export class PostDataModule{
     constructor(@Optional() @SkipSelf() parentModule: PostDataModule) {
         if(!parentModule) return;
 
-        throw new Error('AuthModule is already loaded!');
+        throw new Error('PostModule is already loaded!');
     }
 }

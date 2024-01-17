@@ -8,24 +8,25 @@ import { NgxPaginationModule } from "ngx-pagination";
 import { PostCreateComponent } from './components/post-create/post-create.component';
 import { NgxEditorModule } from "ngx-editor";
 import { PostResolver } from "./resolvers/post.resolver";
+import { CommentListComponent } from "src/app/comment/comment-editor/components/comment-list/comment-list.component";
 
 @NgModule({
-    imports:[
+    imports: [
         CommonModule,
         FormsModule,
         PostEditorRoutingModule,
         NgxPaginationModule,
         NgxEditorModule
     ],
-    providers:[
-        PostResolver,
-        DatePipe
+    providers: [
+        PostResolver
     ],
-    declarations:[
+    declarations: [
         PostListComponent,
         PostViewComponent,
         PostCreateComponent,
-        PostViewComponent
+        PostViewComponent,
+        CommentListComponent
     ]
 })
-export class PostEditorModule{}
+export class PostEditorModule { }

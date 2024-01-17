@@ -2,7 +2,9 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Post } from "src/app/shered/post/post.model";
 
-@Injectable()
+@Injectable({
+        providedIn: 'root'
+})
 export class PostDataService{
 
         

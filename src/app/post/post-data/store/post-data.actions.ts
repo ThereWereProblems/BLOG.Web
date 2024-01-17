@@ -20,6 +20,11 @@ export const setPostDataPager = createAction(
     props<{ pager: DataPager }>()
 )
 
+export const setCurrentPost = createAction(
+    "[Store] Set Current Post",
+    props<{id: number}>()
+)
+
 // create
 export const createPost = createAction(
     "[CreatePostComponent] Create Post",

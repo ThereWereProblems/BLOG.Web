@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PostDataModule } from './post/post-data/post-data.module';
+import { CommentDataModule } from './comment/comment-data/comment-data.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { PostDataModule } from './post/post-data/post-data.module';
   imports: [
     HttpClientModule,
     AuthDataModule,
+    CommentDataModule,
     PostDataModule,
     BrowserModule,
     AppRoutingModule,

@@ -1,0 +1,29 @@
+<div *ngIf="(commentList$ | async) as commentList">
+    <h4>Komentarze: {{commentList.length}}</h4>
+    <div *ngFor="let comment of commentList" class="list-group">
+        <div class="list-group-item mb-2">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{comment.user}}</h6>
+                <small>{{comment.publishedAt?.toLocaleString()}}</small>
+            </div>
+            <p class="mb-1">{{comment.content}}</p>
+        </div>
+    </div>
+
+    <div *ngIf="(user$ | async)" class="mt-2 mb-3">
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div id="post-data">
+                <div class="form-group">
+                    <label for="comment">
+                        <h5>Dodaj komentarz</h5>
+                    </label>
+                    <textarea type="text" id="comment" class="form-control" ngModel name="comment" #comment="ngModel"
+                        required maxlength="500" matInput></textarea>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-primary mt-2" type="submit" [disabled]="!f.valid">Dodaj</button>
+            </div>
+        </form>
+    </div>
+</div>

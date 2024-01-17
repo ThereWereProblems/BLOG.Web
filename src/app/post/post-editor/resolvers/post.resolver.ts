@@ -6,6 +6,7 @@ import { PostDataState } from "../../post-data/store/reducers";
 import { PostService } from "../../post-data/services/post.service";
 import { PostDataService } from "../../post-data/services/post-data.service";
 import { tap } from "rxjs";
+import { PostDataActions } from "../../post-data/store/action-types";
 
 @Injectable()
 export class PostResolver implements Resolve<Post>{
@@ -17,7 +18,9 @@ export class PostResolver implements Resolve<Post>{
     ) { }
 
     resolve = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-        if(!+route.paramMap.get('id')!) return {};
+        if (!+route.paramMap.get('id')!) return {};
+
+        this.store.dispatch(PostDataActions.setCurrentPost({ id: +route.paramMap.get('id')! }));
 
         return this.service.get(+route.paramMap.get('id')!).pipe(
             tap(data => this.postDataService.emitPostDataChanged(data))

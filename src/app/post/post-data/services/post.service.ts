@@ -18,25 +18,24 @@ export class PostService {
         this.api = environment.apiUrl;
     }
 
-    public get = (id: number): Observable<Post> => 
+    public get = (id: number): Observable<Post> =>
         this.http.get<Post>(this.api + '/Post/' + id);
 
     public search = (model: BaseQuery): Observable<PagedList<Post>> =>
         this.http.get<PagedList<Post>>(this.api + '/Post/search',
             {
-                params: { 
+                params: {
                     pageIndex: model.pageIndex!,
-                    pageSize: model.pageSize! 
+                    pageSize: model.pageSize!
                 }
             });
 
-    public create = (model: PostCreate, file: File): Observable<HttpResponse<number>> =>
-    {
+    public create = (model: PostCreate, file: File): Observable<HttpResponse<number>> => {
         const formData = new FormData();
         formData.append('model', JSON.stringify(model));
         formData.append('file', file);
         return this.http.post<number>(this.api + '/Post/create', formData, {
             observe: 'response'
-          })
-      }
+        })
+    }
 }
