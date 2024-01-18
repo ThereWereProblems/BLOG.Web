@@ -22,7 +22,8 @@ export const setCommentDataPager = createAction(
 )
 
 export const reloadCommentDataList = createAction(
-    "[CommentListComponent] Reload Comment Data List"
+    "[CommentListComponent] Reload Comment Data List",
+    props<{ id: number }>()
 )
 
 // create

@@ -34,14 +34,10 @@ export class PostCreateComponent implements OnDestroy {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form);
     let post = new PostCreate();
     post.title = form.value.title;
     post.description = form.value.summary;
     post.content = form.value.content;
-
-    console.log(post);
-    console.log(this.selectedFile);
 
     this.store.dispatch(PostDataActions.createPost({model: post, file: this.selectedFile}));
   }

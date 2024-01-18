@@ -43,6 +43,16 @@ export class CommentDataEffects {
         ))
     ));
 
+    reloadCommentDataList$ = createEffect(() => this.actons$.pipe(
+        ofType(CommentDataActions.reloadCommentDataList),
+        withLatestFrom(this.store.select(getPager)),
+        switchMap(([action, pager]) => this.service.search({ pageIndex: 1, pageSize: pager.pageSize! }, action.id).pipe(
+            tap(data => this.commentDataService.emitCommentListDataChanged(data.result!)),
+            map(data => CommentDataActions.setCommentDataPager({ pager: data.dataPager! })),
+            catchError((_) => of(CommentDataActions.loadCommentDataListFaild()))
+        ))
+    ));
+
     //create
     createComment$ = createEffect(() => this.actons$.pipe(
         ofType(CommentDataActions.createComment),

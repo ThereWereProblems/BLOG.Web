@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +13,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PostDataModule } from './post/post-data/post-data.module';
 import { CommentDataModule } from './comment/comment-data/comment-data.module';
+import { SignalrService } from './signalr.service';
+import { appStateReducer } from './store/reducers';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,7 @@ import { CommentDataModule } from './comment/comment-data/comment-data.module';
     PostDataModule,
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({appStateReducer}),
     EffectsModule.forRoot([])
   ],
   providers: [
@@ -36,6 +38,13 @@ import { CommentDataModule } from './comment/comment-data/comment-data.module';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
       multi: true
+    },
+    SignalrService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (signalrService: SignalrService) => () => signalrService.initiateSignalrConnection(),
+      deps: [SignalrService],
+      multi: true,
     }
   ],
   bootstrap: [AppComponent]

@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { LoginResult } from "src/app/shered/auth/login-result.model";
 import { AuthActions } from "../action-types";
-import { state } from "@angular/animations";
 
 export interface AuthState {
     userData?: LoginResult,

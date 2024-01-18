@@ -49,12 +49,11 @@ export class CommentListComponent {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form);
     let comment = {
       postId: this.postId,
       content: form.value.comment
-    } as Comment
-    console.log(comment);
+    } as Comment;
     this.store.dispatch(CommentDataActions.createComment({ model: comment }));
+    form.resetForm();
   }
 }
