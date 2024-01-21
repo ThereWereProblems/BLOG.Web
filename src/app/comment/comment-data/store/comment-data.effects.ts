@@ -22,8 +22,7 @@ export class CommentDataEffects {
 
     loadCommentDataList$ = createEffect(() => this.actons$.pipe(
         ofType(CommentDataActions.loadCommentDataList),
-        withLatestFrom(this.store.select(getPager)),
-        switchMap(([action, pager]) => this.service.search({ pageIndex: pager.pageIndex, pageSize: pager.pageSize }, action.postId).pipe(
+        switchMap((action) => this.service.search({ pageIndex: 1, pageSize: 5 }, action.postId).pipe(
             tap(data => this.commentDataService.emitCommentListDataChanged(data.result!)),
             map(data => CommentDataActions.setCommentDataPager({ pager: data.dataPager! })),
             catchError((_) => of(CommentDataActions.loadCommentDataListFaild()))
@@ -71,6 +70,6 @@ export class CommentDataEffects {
 
     createCommentField$ = createEffect(() => this.actons$.pipe(
         ofType(CommentDataActions.createCommentField),
-        tap(_ => this.notifierService.notify("error", "Błąd połączenia z serwerem!"))
+        tap(_ => this.notifierService.notify("error", "Błąd podczas dodawania komentarza!"))
     ), { dispatch: false });
 }

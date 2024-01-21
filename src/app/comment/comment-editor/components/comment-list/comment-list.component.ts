@@ -7,9 +7,11 @@ import { getUser } from 'src/app/auth/auth-data/store/auth.selectors';
 import { CommentDataService } from 'src/app/comment/comment-data/services/comment-data.service';
 import { CommentDataActions } from 'src/app/comment/comment-data/store/action-types';
 import { loadCommentDataList } from 'src/app/comment/comment-data/store/comment-data.actions';
+import { getPager } from 'src/app/comment/comment-data/store/comment-data.selectors';
 import { PostDataState } from 'src/app/post/post-data/store/reducers';
 import { LoginResult } from 'src/app/shered/auth/login-result.model';
 import { Comment } from 'src/app/shered/comment/comment.model';
+import { DataPager } from 'src/app/shered/pager/data-pager.model';
 
 @Component({
   selector: 'app-comment-list',
@@ -21,12 +23,16 @@ export class CommentListComponent {
   public user$: Observable<LoginResult | undefined>
   public commentList$: Observable<Comment[]>;
   public postId: number;
+  public pager$: Observable<DataPager>;
 
   constructor(private store: Store<PostDataState>,
     service: CommentDataService,
     route: ActivatedRoute) {
+
     this.postId = +route.snapshot.paramMap.get('id')!;
     this.user$ = store.select(getUser);
+    this.pager$ = store.select(getPager);
+
     this.commentList$ = service.commentListData$.pipe(
       map(data => {
         data.forEach(comment => {
@@ -44,7 +50,6 @@ export class CommentListComponent {
       })
     );
 
-
     store.dispatch(loadCommentDataList({ postId: this.postId }));
   }
 
@@ -56,4 +61,9 @@ export class CommentListComponent {
     this.store.dispatch(CommentDataActions.createComment({ model: comment }));
     form.resetForm();
   }
+
+  showMore() {
+    this.store.dispatch(CommentDataActions.loadMoreCommentDataList({ postId: this.postId }))
+  }
+
 }

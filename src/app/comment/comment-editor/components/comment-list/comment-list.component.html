@@ -1,12 +1,17 @@
 <div *ngIf="(commentList$ | async) as commentList">
-    <h4>Komentarze: {{commentList.length}}</h4>
-    <div *ngFor="let comment of commentList" class="list-group">
-        <div class="list-group-item mb-2">
-            <div class="d-flex w-100 justify-content-between">
-                <h6 class="mb-1">{{comment.user}}</h6>
-                <small>{{comment.publishedAt?.toLocaleString()}}</small>
+    <div *ngIf="(pager$ | async) as pager">
+        <h4>Komentarze: {{pager.totalRecords}}</h4>
+        <div *ngFor="let comment of commentList" class="list-group">
+            <div class="list-group-item mb-2">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">{{comment.user}}</h6>
+                    <small>{{comment.publishedAt?.toLocaleString()}}</small>
+                </div>
+                <p class="mb-1">{{comment.content}}</p>
             </div>
-            <p class="mb-1">{{comment.content}}</p>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            <a *ngIf="pager.totalPages! > 1" (click)="showMore()" class="mb-4"><b>Pokaż więcej</b></a>
         </div>
     </div>
 
