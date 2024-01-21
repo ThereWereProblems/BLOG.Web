@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { PostDataActions } from "./action-types";
 import { catchError, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { getPager } from "./post-data.selectors";
+import { NotifierService } from "angular-notifier";
 
 @Injectable()
 export class PostDataEffects {
@@ -17,7 +18,8 @@ export class PostDataEffects {
         private store: Store<PostDataState>,
         private service: PostService,
         private postDataService: PostDataService,
-        private router: Router
+        private router: Router,
+        private notifierService: NotifierService
     ) { }
 
     loadPostDataList$ = createEffect(() => this.actons$.pipe(
@@ -32,7 +34,7 @@ export class PostDataEffects {
 
     loadPostDataListFaild$ = createEffect(() => this.actons$.pipe(
         ofType(PostDataActions.loadPostDataListFaild),
-        tap(_ => window.alert("Błąd połączenia z serwerem!"))
+        tap(_ => this.notifierService.notify("error", "Błąd połączenia z serwerem!"))
     ), { dispatch: false });
 
     changePagePostDataList$ = createEffect(() => this.actons$.pipe(
@@ -56,12 +58,12 @@ export class PostDataEffects {
 
     createPostComplited$ = createEffect(() => this.actons$.pipe(
         ofType(PostDataActions.createPostComplited),
-        tap(_ => window.alert("Wpis dodany pomyślnie!")),
+        tap(_ => this.notifierService.notify("success", "Wpis dodany pomyślnie!")),
         tap(data => this.router.navigate(['post', 'view', data.id]))
     ), { dispatch: false });
 
     createPostField$ = createEffect(() => this.actons$.pipe(
         ofType(PostDataActions.createPostField),
-        tap(_ => window.alert("Błąd podczas dodawania wpisu!"))
+        tap(_ => this.notifierService.notify("error", "Błąd podczas dodawania wpisu!"))
     ), { dispatch: false });
 }

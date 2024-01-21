@@ -15,6 +15,7 @@ import { PostDataModule } from './post/post-data/post-data.module';
 import { CommentDataModule } from './comment/comment-data/comment-data.module';
 import { SignalrService } from './signalr.service';
 import { appStateReducer } from './store/reducers';
+import { NotifierModule } from 'angular-notifier';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,16 @@ import { appStateReducer } from './store/reducers';
     NotFoundComponent
   ],
   imports: [
+    NotifierModule.withConfig({
+      position: {
+        vertical: {
+          position: 'top'
+        },
+      },
+      behaviour: {
+        autoHide: 3000
+      }    
+    }),
     HttpClientModule,
     AuthDataModule,
     CommentDataModule,

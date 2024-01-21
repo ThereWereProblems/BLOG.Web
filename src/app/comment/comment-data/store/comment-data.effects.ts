@@ -7,6 +7,7 @@ import { CommentDataService } from "../services/comment-data.service";
 import { CommentDataActions } from "./action-types";
 import { catchError, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { getPager } from "./comment-data.selectors";
+import { NotifierService } from "angular-notifier";
 
 @Injectable()
 export class CommentDataEffects {
@@ -15,7 +16,8 @@ export class CommentDataEffects {
         private actons$: Actions,
         private store: Store<CommentDataState>,
         private service: CommentService,
-        private commentDataService: CommentDataService
+        private commentDataService: CommentDataService,
+        private notifierService: NotifierService
     ) { }
 
     loadCommentDataList$ = createEffect(() => this.actons$.pipe(
@@ -30,7 +32,7 @@ export class CommentDataEffects {
 
     loadCommentDataListFaild$ = createEffect(() => this.actons$.pipe(
         ofType(CommentDataActions.loadCommentDataListFaild),
-        tap(_ => window.alert("Błąd połączenia z serwerem!"))
+        tap(_ => this.notifierService.notify("error", "Błąd połączenia z serwerem!"))
     ), { dispatch: false });
 
     loadMoreCommentDataList$ = createEffect(() => this.actons$.pipe(
@@ -64,11 +66,11 @@ export class CommentDataEffects {
 
     createCommentComplited$ = createEffect(() => this.actons$.pipe(
         ofType(CommentDataActions.createCommentComplited),
-        tap(_ => window.alert("Komentarz dodany!"))
+        tap(_ => this.notifierService.notify("success", "Komentarz dodany!"))
     ), { dispatch: false });
 
     createCommentField$ = createEffect(() => this.actons$.pipe(
         ofType(CommentDataActions.createCommentField),
-        tap(_ => window.alert("Błąd połączenia z serwerem!"))
+        tap(_ => this.notifierService.notify("error", "Błąd połączenia z serwerem!"))
     ), { dispatch: false });
 }

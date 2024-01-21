@@ -10,6 +10,7 @@ import { USER_AUTH_DATA } from "./auth.tokens";
 import { UserLocalStorage } from "src/app/shered/auth/user-local-storage.model";
 import { getUser } from "./auth.selectors";
 import { LoginResult } from "src/app/shered/auth/login-result.model";
+import { NotifierService } from "angular-notifier";
 
 @Injectable()
 export class AuthEffects {
@@ -18,7 +19,8 @@ export class AuthEffects {
         private actons$: Actions,
         private store: Store<AuthState>,
         private service: AuthService,
-        private router: Router
+        private router: Router,
+        private notifierService: NotifierService
     ) { }
 
 
@@ -32,7 +34,7 @@ export class AuthEffects {
 
     registerField$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.registerField),
-        tap(_ => window.alert("Błąd podczas tworzenia konta!"))
+        tap(_ => this.notifierService.notify("error", "Błąd podczas tworzenia konta!"))
     ), { dispatch: false });
 
     login$ = createEffect(() => this.actons$.pipe(
@@ -54,7 +56,7 @@ export class AuthEffects {
 
     loginField$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.loginField),
-        tap(_ => window.alert("Błąd autoryzacji!"))
+        tap(_ => this.notifierService.notify("error", "Błąd autoryzacji!"))
     ), { dispatch: false });
 
     refreshToken$ = createEffect(() => this.actons$.pipe(
