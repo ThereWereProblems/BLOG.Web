@@ -7,15 +7,19 @@
                     <h6 class="mb-1">{{comment.user}}</h6>
                     <small>{{comment.publishedAt?.toLocaleString()}}</small>
                 </div>
-                <p class="mb-1">{{comment.content}}</p>
+                <div class="d-flex"></div>
+                <p class="mb-1 d-inline-block">{{comment.content}}</p>
+                <div *ngIf="(user$ | async) as user" class=" d-inline-block float-end">
+                    <a *ngIf="user.nickName == comment.user" role="button" (click)="delete(comment.id!)"><b>Usuń</b></a>
+                </div>
             </div>
         </div>
         <div class="d-flex align-items-center justify-content-center">
-            <a *ngIf="pager.totalPages! > 1" (click)="showMore()" class="mb-4"><b>Pokaż więcej</b></a>
+            <a *ngIf="pager.totalPages! > 1" role="button" (click)="showMore()" class="mb-4"><b>Pokaż więcej</b></a>
         </div>
     </div>
 
-    <div *ngIf="(user$ | async)" class="mt-2 mb-3">
+    <div *ngIf="(user$ | async) as user" class="mt-2 mb-3">
         <form (ngSubmit)="onSubmit(f)" #f="ngForm">
             <div id="post-data">
                 <div class="form-group">

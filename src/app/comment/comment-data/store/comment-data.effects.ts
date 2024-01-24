@@ -59,7 +59,7 @@ export class CommentDataEffects {
         ofType(CommentDataActions.createComment),
         switchMap(action => this.service.create(action.model).pipe(
             map(data => CommentDataActions.createCommentComplited()),
-            catchError((_) => of(CommentDataActions.loadCommentDataListFaild()))
+            catchError((_) => of(CommentDataActions.createCommentField()))
         ))
     ));
 
@@ -71,5 +71,24 @@ export class CommentDataEffects {
     createCommentField$ = createEffect(() => this.actons$.pipe(
         ofType(CommentDataActions.createCommentField),
         tap(_ => this.notifierService.notify("error", "Błąd podczas dodawania komentarza!"))
+    ), { dispatch: false });
+
+    //delete
+    deleteComment$ = createEffect(() => this.actons$.pipe(
+        ofType(CommentDataActions.deleteComment),
+        switchMap(action => this.service.delete(action.id).pipe(
+            map(data => CommentDataActions.deleteCommentComplited()),
+            catchError((_) => of(CommentDataActions.deleteCommentField()))
+        ))
+    ));
+
+    deleteCommentComplited$ = createEffect(() => this.actons$.pipe(
+        ofType(CommentDataActions.deleteCommentComplited),
+        tap(_ => this.notifierService.notify("success", "Komentarz usunięty!"))
+    ), { dispatch: false });
+
+    deleteCommentField$ = createEffect(() => this.actons$.pipe(
+        ofType(CommentDataActions.deleteCommentField),
+        tap(_ => this.notifierService.notify("error", "Błąd podczas usuwania komentarza!"))
     ), { dispatch: false });
 }

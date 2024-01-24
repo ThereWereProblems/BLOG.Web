@@ -30,4 +30,7 @@ export class CommentService {
 
     public create = (model: Comment) =>
         this.http.post(this.api + '/Comment/create', model);
+
+    public delete = (id: number) =>
+        this.http.delete(this.api + '/Comment/delete/' + id)
 }

@@ -7,8 +7,7 @@ import { AuthActions } from "./action-types";
 import { catchError, delay, map, of, switchMap, takeUntil, tap, withLatestFrom } from "rxjs";
 import { AuthService } from "../services/auth.service";
 import { USER_AUTH_DATA } from "./auth.tokens";
-import { UserLocalStorage } from "src/app/shered/auth/user-local-storage.model";
-import { getUser } from "./auth.selectors";
+import { getRefreshToken } from "./auth.selectors";
 import { LoginResult } from "src/app/shered/auth/login-result.model";
 import { NotifierService } from "angular-notifier";
 
@@ -23,7 +22,7 @@ export class AuthEffects {
         private notifierService: NotifierService
     ) { }
 
-
+    // register
     register$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.register),
         switchMap(action => this.service.register(action.model).pipe(
@@ -37,6 +36,7 @@ export class AuthEffects {
         tap(_ => this.notifierService.notify("error", "Błąd podczas tworzenia konta!"))
     ), { dispatch: false });
 
+    // login
     login$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.login),
         switchMap(action => this.service.login(action.model).pipe(
@@ -54,15 +54,22 @@ export class AuthEffects {
         map(data => AuthActions.refreshTokenTimer({ miliseconds: +data.model.expiresIn! * 1000 }))
     ));
 
+    loginCompleated2$ = createEffect(() => this.actons$.pipe(
+        ofType(AuthActions.loginCompleated),
+        map(data => AuthActions.getUserInfo())
+    ));
+
     loginField$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.loginField),
         tap(_ => this.notifierService.notify("error", "Błąd autoryzacji!"))
     ), { dispatch: false });
 
+
+    //refresh token
     refreshToken$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.refreshToken),
-        withLatestFrom(this.store.select(getUser)),
-        switchMap(([_, user]) => this.service.refresh({ refreshToken: user?.refreshToken }).pipe(
+        withLatestFrom(this.store.select(getRefreshToken)),
+        switchMap(([_, token]) => this.service.refresh({ refreshToken: token }).pipe(
             map(data => AuthActions.refreshTokenCompleated({ model: data })),
             catchError((_) => of(AuthActions.refreshTokenField()))
         ))
@@ -88,12 +95,24 @@ export class AuthEffects {
         takeUntil(this.actons$.pipe(ofType(AuthActions.logout)))
     ));
 
+    // local storage
     refreshTokenFromLocalStorage$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.refreshTokenFromLocalStorage),
         switchMap(action => this.service.refresh({ refreshToken: action.token }).pipe(
-            map(data => AuthActions.refreshTokenCompleated({ model: data })),
+            map(data => AuthActions.refreshTokenFromLocalStorageCompleated({ model: data })),
+            //map(_ => AuthActions.getUserInfo()),
             catchError((_) => of(AuthActions.refreshTokenField()))
         ))
+    ));
+
+    refreshTokenFromLocalStorageCompleated$ = createEffect(() => this.actons$.pipe(
+        ofType(AuthActions.refreshTokenFromLocalStorageCompleated),
+        map(data => AuthActions.refreshTokenCompleated({ model: data.model })),
+    ));
+
+    refreshTokenFromLocalStorageCompleated2$ = createEffect(() => this.actons$.pipe(
+        ofType(AuthActions.refreshTokenFromLocalStorageCompleated),
+        map(data => AuthActions.getUserInfo()),
     ));
 
     loadUserFromLocalStorage$ = createEffect(() => this.actons$.pipe(
@@ -111,8 +130,23 @@ export class AuthEffects {
         ofType(AuthActions.loadUserFromLocalStorageField),
     ), { dispatch: false });
 
+    // logout
     logout$ = createEffect(() => this.actons$.pipe(
         ofType(AuthActions.logout),
         tap(_ => localStorage.removeItem(USER_AUTH_DATA))
+    ), { dispatch: false });
+
+    // get user info
+    getUserInfo$ = createEffect(() => this.actons$.pipe(
+        ofType(AuthActions.getUserInfo),
+        switchMap(_ => this.service.getInfo().pipe(
+            map(data => AuthActions.getUserInfoCompleated({ model: data })),
+            catchError((_) => of(AuthActions.getUserInfoField()))
+        ))
+    ));
+
+    getUserInfoField$ = createEffect(() => this.actons$.pipe(
+        ofType(AuthActions.getUserInfoField),
+        tap(_ => this.notifierService.notify("error", "Błąd połączenia z serwerem!"))
     ), { dispatch: false });
 }

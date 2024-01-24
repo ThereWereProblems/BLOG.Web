@@ -39,3 +39,17 @@ export const createCommentComplited = createAction(
 export const createCommentField = createAction(
     "[CommentListComponent] Create Comment Field"
 )
+
+// delete
+export const deleteComment = createAction(
+    "[CommentListComponent] Delete Comment",
+    props<{ id: number }>()
+)
+
+export const deleteCommentComplited = createAction(
+    "[CommentListComponent] Delete Comment Complited"
+)
+
+export const deleteCommentField = createAction(
+    "[CommentListComponent] Delete Comment Field"
+)

@@ -3,13 +3,14 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
-import { getUser } from 'src/app/auth/auth-data/store/auth.selectors';
+import { getUserInfo } from 'src/app/auth/auth-data/store/auth.selectors';
 import { CommentDataService } from 'src/app/comment/comment-data/services/comment-data.service';
 import { CommentDataActions } from 'src/app/comment/comment-data/store/action-types';
 import { loadCommentDataList } from 'src/app/comment/comment-data/store/comment-data.actions';
 import { getPager } from 'src/app/comment/comment-data/store/comment-data.selectors';
 import { PostDataState } from 'src/app/post/post-data/store/reducers';
 import { LoginResult } from 'src/app/shered/auth/login-result.model';
+import { UserInfo } from 'src/app/shered/auth/user-info.model';
 import { Comment } from 'src/app/shered/comment/comment.model';
 import { DataPager } from 'src/app/shered/pager/data-pager.model';
 
@@ -20,7 +21,7 @@ import { DataPager } from 'src/app/shered/pager/data-pager.model';
 })
 export class CommentListComponent {
 
-  public user$: Observable<LoginResult | undefined>
+  public user$: Observable<UserInfo | undefined>
   public commentList$: Observable<Comment[]>;
   public postId: number;
   public pager$: Observable<DataPager>;
@@ -30,7 +31,7 @@ export class CommentListComponent {
     route: ActivatedRoute) {
 
     this.postId = +route.snapshot.paramMap.get('id')!;
-    this.user$ = store.select(getUser);
+    this.user$ = store.select(getUserInfo);
     this.pager$ = store.select(getPager);
 
     this.commentList$ = service.commentListData$.pipe(
@@ -63,7 +64,11 @@ export class CommentListComponent {
   }
 
   showMore() {
-    this.store.dispatch(CommentDataActions.loadMoreCommentDataList({ postId: this.postId }))
+    this.store.dispatch(CommentDataActions.loadMoreCommentDataList({ postId: this.postId }));
+  }
+
+  delete(id: number){
+    this.store.dispatch(CommentDataActions.deleteComment({ id: id }))
   }
 
 }

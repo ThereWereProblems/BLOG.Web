@@ -5,6 +5,7 @@ import { LoginResult } from "src/app/shered/auth/login-result.model";
 import { Login } from "src/app/shered/auth/login.model";
 import { RefreshRequest } from "src/app/shered/auth/refresh-request.model";
 import { Register } from "src/app/shered/auth/register.model";
+import { UserInfo } from "src/app/shered/auth/user-info.model";
 import { environment } from "src/environments/environment";
 
 @Injectable({ providedIn: 'root' })
@@ -26,5 +27,8 @@ export class AuthService {
 
     public refresh = (model: RefreshRequest): Observable<LoginResult> =>
         this.http.post<LoginResult>(this.api + '/Account/refresh', model);
+
+    public getInfo = (): Observable<UserInfo> =>
+        this.http.get<UserInfo>(this.api + '/Account/userinfo');
 
 }

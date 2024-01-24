@@ -2,6 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import { LoginResult } from "src/app/shered/auth/login-result.model";
 import { Login } from "src/app/shered/auth/login.model";
 import { Register } from "src/app/shered/auth/register.model";
+import { UserInfo } from "src/app/shered/auth/user-info.model";
 
 export const register = createAction(
     "[RegisterComponent] Register",
@@ -53,6 +54,11 @@ export const refreshTokenFromLocalStorage = createAction(
     props<{ token: string }>()
 )
 
+export const refreshTokenFromLocalStorageCompleated = createAction(
+    "[Store] Refresh Token From Local Storage Compleated",
+    props<{ model: LoginResult }>()
+)
+
 export const loadUserFromLocalStorage = createAction(
     "[HederComponent] Load User From Local Storage"
 )
@@ -65,4 +71,15 @@ export const logout = createAction(
     "[Store] Logout"
 )
 
+export const getUserInfo = createAction(
+    "[Store] Get User Info"
+)
 
+export const getUserInfoCompleated = createAction(
+    "[Store] Get User Info Compleated",
+    props<{ model: UserInfo }>()
+)
+
+export const getUserInfoField = createAction(
+    "[Store] Get User Info Field"
+)
